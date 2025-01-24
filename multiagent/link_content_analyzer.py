@@ -1,6 +1,7 @@
 from tool_web_scrapper import WebpageScrapperTool
 from prompt_ollama_hashtag_generator import HashtagGenerator
 from tool_web_scrapperB import SeleniumScraper
+from tool_youtube_video_scrapper import YoutubeVideoScrapperTool
 
 class LinkContentAnalyzerAgent:
     """
@@ -13,6 +14,7 @@ class LinkContentAnalyzerAgent:
         self.web_scrapper_tool = WebpageScrapperTool()
         self._hashtag_generator = HashtagGenerator(ollama_client, model_name)
         self.selenium_Scraper = SeleniumScraper()
+        self.youtubeVideo_scrapper_tool = YoutubeVideoScrapperTool()
 
     def _scrape_webpage(self, url: str) -> dict:
         try:
@@ -33,8 +35,14 @@ class LinkContentAnalyzerAgent:
         for link in valid_links:
 
             print('LinkContentAnalyzerAgent',link)
-            webpage_content = self._scrape_webpage(link)
+            # webpage_content = self._scrape_webpage(link)
 
+            if "youtu.be" in link or "youtube.com" in link:
+                webpage_content = self.youtubeVideo_scrapper_tool.execute(link)
+            else:
+                webpage_content = self._scrape_webpage(link)
+
+                
             # Safely get the text from the scrapped data
             if not webpage_content.strip():
                 # If there's no text, skip or store empty data

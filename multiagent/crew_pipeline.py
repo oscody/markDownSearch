@@ -148,8 +148,7 @@ if __name__ == "__main__":
     # 2: Process a specific file
     # specific_file = '/Users/bogle/Dev/obsidian/Bogle/4. Archives/Evernote/nians notebook/Wix Support wayne.md'
     # specific_file = '/Users/bogle/Dev/obsidian/Bogle/4. Archives/Evernote/nians notebook/vpn.md'
-    specific_file = '/Users/bogle/Dev/obsidian/Bogle/4. Archives/Evernote/nians notebook/escorts.md'
-    # specific_file = '/Users/bogle/Dev/obsidian/Bogle/2. Areas/multiagent tester.md'
+    specific_file = '/Users/bogle/Dev/obsidian/Bogle/2. Areas/multiagent tester.md'
     specific_files = process_markdown_files(
         input_dir, 
         specific_file=specific_file

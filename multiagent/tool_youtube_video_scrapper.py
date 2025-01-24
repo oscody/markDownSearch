@@ -7,10 +7,12 @@ class YoutubeVideoScrapperTool:
         This function gets the video ID from the URL provided by the user.
         """
         try:
-            video_id = url.split("v=")[1]
-            if "&" in video_id:
-                video_id = video_id.split("&")[0]  # Handle additional query parameters
-            return video_id
+            if "youtu.be" in url:
+                return url.split("/")[-1]
+            elif "youtube.com" in url:
+                return url.split("v=")[1].split("&")[0]
+            else:
+                raise ValueError("Invalid YouTube URL format.")
         except IndexError:
             raise ValueError("Invalid YouTube URL format.")
 
@@ -21,7 +23,7 @@ class YoutubeVideoScrapperTool:
         """
         try:
             transcript = YouTubeTranscriptApi.get_transcript(video_id)
-            return transcript
+            return " ".join([entry['text'] for entry in transcript])
         except Exception as e:
             raise RuntimeError(f"Failed to fetch transcription: {e}")
 
@@ -44,8 +46,11 @@ class YoutubeVideoScrapperTool:
             print(f"An error occurred: {e}")
             return None
 
-# Example usage
+
 if __name__ == "__main__":
     scraper = YoutubeVideoScrapperTool()
-    url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    url = "https://www.youtube.com/watch?v=Oo8-nEuDBkk"
+    scraper.execute(url)
+    print('------------')
+    urv2 = 'https://youtu.be/argpSxB1NQE?si=djxfU0ObgHatQU7Q&t=6003'
     scraper.execute(url)
