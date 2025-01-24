@@ -1,0 +1,32 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run multiagent/crew_pipeline.py",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/multiagent/crew_pipeline.py",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}" // Ensures imports work relative to the project root
+      },
+      "cwd": "${workspaceFolder}", // Sets the current working directory to the project root
+      "python": "/Users/bogle/mambaforge/bin/python" // Use the virtual environment's Python
+    },
+    {
+      "name": "Run multiagent/link_usage_report.py",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/link_usage_filter.py",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}" // Ensures imports work relative to the project root
+      },
+      "cwd": "${workspaceFolder}", // Sets the current working directory to the project root
+      "python": "/Users/bogle/mambaforge/bin/python" // Use the virtual environment's Python
+    }
+  ]
+}

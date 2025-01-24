@@ -10,7 +10,8 @@ class LinkExtractorAgent:
             # Minimal check for link validity
             try:
                 response = requests.head(link, timeout=5)
-                if response.status_code < 400:
+                # changed for website throwing error 
+                if response.status_code < 500: 
                     valid_links.append(link)
             except:
                 # If invalid or request fails, ignore or store as broken
