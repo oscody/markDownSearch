@@ -1,0 +1,24 @@
+
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+__pycache__/
+
+markDownSearch/*
+passwords/
+
+
+.log
+script.log
+.env
+multiagent/chromedriver
+
+# Ignore all Markdown files
+*.md
+
+# Except for README.md
+!README.md
+.DS_Store
