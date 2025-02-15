@@ -6,7 +6,7 @@ from crewai_tools import (
     FileReadTool,
 )
 
-llm=LLM(model="ollama/llama3.2", base_url="http://localhost:11434")
+llm=LLM(model="ollama/llama3.2", base_url="http://localhost:11434/v1")
 
 file_tool = FileReadTool('/Users/bogle/Dev/obsidian/Bogle/2. Areas/multi device tester.md')
 
@@ -21,6 +21,23 @@ extractor = Agent(
     max_iter=1
 )
 
+hashtag_creator = Agent(
+    role='Hashtag Creator',
+    goal='Create relevant hashtags based on the content and links.',
+    backstory='You are skilled at identifying keywords and creating impactful hashtags.',
+    verbose=True,
+    llm=llm,
+    max_iter=1
+)
+
+create_note_hashtags_task = Task(
+    description="Create relevant hashtags based on the content of the note.",
+    agent=hashtag_creator,
+    expected_output="A list of hashtags based on the note content."
+)
+
+
+
 # Define the tasks
 extract_information_task = Task(
     description="Read the given file and summerise what is in it",
@@ -31,8 +48,8 @@ extract_information_task = Task(
 
 
 notecrew = Crew(
-    agents=[extractor],
-    tasks=[extract_information_task],
+    agents=[extractor, hashtag_creator],
+    tasks=[extract_information_task, create_note_hashtags_task],
     verbose=True,
     process=Process.sequential
 )
@@ -40,4 +57,5 @@ notecrew = Crew(
 
 
 # Kickoff the crew process 
-result = notecrew.kickoff()
+result = notecrew.kickoff({"path_to_the_file": "/Users/bogle/Dev/obsidian/Bogle/2. Areas/multi device tester.md"})
+print(result)
