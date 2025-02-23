@@ -18,8 +18,10 @@ multiagent/chromedriver
 
 # Ignore all Markdown files
 *.md
+!README.md # Except for README.md
 
-# Except for README.md
-!README.md
+
 .DS_Store
 link_usage_report.csv
+drive-download/
+*.db
