@@ -8,8 +8,8 @@ venv/
 __pycache__/
 
 markDownSearch/*
-passwords/
-
+*.csv
+*.json
 
 .log
 script.log
@@ -25,3 +25,4 @@ multiagent/chromedriver
 link_usage_report.csv
 drive-download/
 *.db
+
