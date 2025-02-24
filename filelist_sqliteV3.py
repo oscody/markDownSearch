@@ -1,6 +1,5 @@
 import os
 import sqlite3
-import hashlib
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import logging
@@ -61,7 +60,7 @@ def get_note_created_date(md_filepath):
       - Extracts the folder name after 'Evernote' if present, or immediately after '4. Archives' otherwise.
       - Constructs the corresponding .enex filename from that folder name.
       - Searches the .enex file for a note with a <title> matching the Markdown file's base name.
-      - Returns the note's <created> date as an ISO-formatted string.
+      - Returns the note's <created> date in the format "YYYY-MM-DD HH:MM:SS".
     
     If the .enex file is not found or no matching note is located, it falls back to the file's creation date.
     """
@@ -76,7 +75,7 @@ def get_note_created_date(md_filepath):
         folder_name = remainder.split(os.sep)[0]
     else:
         # Fallback if neither Evernote nor 4. Archives is in the path.
-        return datetime.fromtimestamp(os.path.getctime(md_filepath)).isoformat()
+        return datetime.fromtimestamp(os.path.getctime(md_filepath)).strftime("%Y-%m-%d %H:%M:%S")
 
     base_name = os.path.splitext(os.path.basename(md_filepath))[0]
     enex_search_dir = "/Users/bogle/Dev/Agent/markDownSearch/drive-download/"
@@ -87,7 +86,7 @@ def get_note_created_date(md_filepath):
         tree = ET.parse(enex_filepath)
     except FileNotFoundError:
         logging.error(f"File Not Found Error for {md_filepath}")
-        return datetime.fromtimestamp(os.path.getctime(md_filepath)).isoformat()
+        return datetime.fromtimestamp(os.path.getctime(md_filepath)).strftime("%Y-%m-%d %H:%M:%S")
 
     root = tree.getroot()
 
@@ -98,10 +97,10 @@ def get_note_created_date(md_filepath):
             if created_elem is not None:
                 created_str = created_elem.text.strip()  # e.g., "20230609T185031Z"
                 dt = datetime.strptime(created_str, "%Y%m%dT%H%M%SZ")
-                return dt.isoformat()
+                return dt.strftime("%Y-%m-%d %H:%M:%S")
 
     # Fallback if no matching note is found
-    return datetime.fromtimestamp(os.path.getctime(md_filepath)).isoformat()
+    return datetime.fromtimestamp(os.path.getctime(md_filepath)).strftime("%Y-%m-%d %H:%M:%S")
 
 def add_file(conn, file_path):
     """Add a new file or update an existing one if renamed."""
@@ -113,7 +112,7 @@ def add_file(conn, file_path):
         note_date = get_note_created_date(file_path)
         date_created = note_date
     else:
-        date_created = datetime.fromtimestamp(os.path.getctime(file_path)).isoformat()
+        date_created = datetime.fromtimestamp(os.path.getctime(file_path)).strftime("%Y-%m-%d %H:%M:%S")
         
     cursor.execute("""
         INSERT INTO files (name, path, date_created, deleted)
@@ -127,7 +126,6 @@ def scan_directory(conn, directory):
        This function adds new files, updates existing ones, and marks files as deleted if they are no longer found.
     """
     allowed_dirs = {"1. Projects", "2. Areas", "3. Resources", "4. Archives"}
-    # seen_hashes = set()
     
     for root_dir, dirs, files in os.walk(directory):
         relative_root = os.path.relpath(root_dir, directory)
@@ -141,11 +139,6 @@ def scan_directory(conn, directory):
                 continue
             full_path = os.path.join(root_dir, file)
             add_file(conn, full_path)
-
-            # file_hash = compute_file_hash(full_path)
-            # if file_hash:
-            #     seen_hashes.add(file_hash)
-    
 
 def check_new_files_by_name(conn, directory):
     """
