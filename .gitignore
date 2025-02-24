@@ -11,7 +11,7 @@ markDownSearch/*
 *.csv
 *.json
 
-.log
+*.log
 script.log
 .env
 multiagent/chromedriver
