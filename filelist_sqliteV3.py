@@ -30,6 +30,21 @@ def initialize_db(db_path="files.db"):
     conn.commit()
     return conn
 
+
+def add_updated_column(db_path="obsidian_index.db"):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    cursor.execute("PRAGMA table_info(files)")
+    existing_columns = [row[1] for row in cursor.fetchall()]
+
+    if "updated" not in existing_columns:
+        cursor.execute("ALTER TABLE files ADD COLUMN updated DATETIME")
+
+    conn.commit()
+    conn.close()
+
+
 # def compute_file_hash(file_path):
 #     """Compute SHA256 hash of the file's contents."""
 #     sha256 = hashlib.sha256()
@@ -179,13 +194,14 @@ def main():
         logging.info("No previous scan found, performing a full scan of the directory.")
         scan_directory(conn, directory_to_scan)
     else:
-        print("New File Scan")
         logging.info("Previous scan detected. Checking only for new files by name.")
         new_files = check_new_files_by_name(conn, directory_to_scan)
         if new_files:
             logging.info(f"Found new files: {new_files}")
-            for file_path in new_files:
-                add_file(conn, file_path)
+            print(f"Found new files: {new_files}")
+
+            # for file_path in new_files:
+            #     # add_file(conn, file_path)
         else:
             logging.info("No new files found.")
     

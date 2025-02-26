@@ -15,11 +15,13 @@ writerName = "scriptinfo"
 # A more descriptive variable name for the time when the script runs:
 script_run_time_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
+
 # The .md file from which we'll read filename/hashtag pairs
-markdown_hashtags_file = '/Users/bogle/Dev/pythonprojects/markDownSearch/ollamaHashtagsV6.md'
+markdown_hashtags_file = '/Users/bogle/Dev/Agent/markDownSearch/md_hashtagwriter/ollamaHashtagsV6.md'
+
 
 # Limit how many matched files we actually process
-max_files_to_process = 1759
+max_files_to_process = 2
 
 # Regex to extract filename and hashtags from lines like:
 # | My Log .md | #SalsaClassCancellation #EvernoteSubscriptionUpdate |
@@ -164,7 +166,7 @@ def update_frontmatter(file_path, filename, hashtags):
 # MAIN LOGIC
 # ---------------------------------------------
 def main():
-    processed_count = 0
+    processed_count = 1
 
     with open(markdown_hashtags_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()

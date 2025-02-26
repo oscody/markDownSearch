@@ -26,3 +26,6 @@ link_usage_report.csv
 drive-download/
 *.db
 
+multiagent_autogen/
+
+!obsidian_index.db
