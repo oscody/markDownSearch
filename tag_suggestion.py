@@ -172,11 +172,11 @@ def main():
     # Get list of new Markdown files
     # new_files = get_new_files(db_path, directory_to_scan)
 
-    # new_files = files_added(directory_to_scan)
+    new_files = files_added(directory_to_scan)
 
-    # # Process each new file individually.
-    # for file_path in new_files:
-    #     process_file_newfiles(file_path)
+    # Process each new file individually.
+    for file_path in new_files:
+        process_file_newfiles(file_path)
 
     changed_files = files_changed(directory_to_scan)
     
