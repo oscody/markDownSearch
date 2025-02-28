@@ -57,13 +57,16 @@ def read_existing_tag_list(tag_list_file):
             with open(tag_list_file, 'r', encoding='utf-8') as file:
                 content = file.read()
                 
-            # Find all #tag patterns in the content
-            # The pattern looks for # followed by letters, numbers, hyphens, and underscores
-            tag_pattern = r'#([a-zA-Z0-9_-]+)'
-            matches = re.findall(tag_pattern, content)
-            
-            # Add all found tags to the set
-            existing_tags.update(matches)
+            # Find all hashtag patterns and their following words
+            lines = content.split('\n')
+            for line in lines:
+                # Process each line to extract tags
+                if line.startswith('#'):
+                    # Remove the # and split by spaces to separate multiple tags on one line
+                    line_without_hash = line[1:].strip()
+                    # Split by spaces and handle potential multi-word tags
+                    parts = re.findall(r'([A-Za-z0-9_-]+)', line_without_hash)
+                    existing_tags.update(parts)
     except Exception as e:
         print(f"Error reading tag list file: {str(e)}")
     
@@ -75,13 +78,15 @@ def update_tag_list_file(tag_list_file, all_tags):
         # Sort tags alphabetically for better readability
         sorted_tags = sorted(all_tags)
         
-        # Format tags with # prefix, one per line
+        # Format tags with # prefix, one tag per line
         formatted_tags = [f"#{tag}" for tag in sorted_tags]
         content = "\n".join(formatted_tags)
         
         # Write to the file
         with open(tag_list_file, 'w', encoding='utf-8') as file:
             file.write(content)
+            
+        print(f"Successfully wrote {len(sorted_tags)} tags to {tag_list_file}")
     except Exception as e:
         print(f"Error updating tag list file: {str(e)}")
 
@@ -115,7 +120,7 @@ def process_markdown_files(markdown_dir, tag_list_file):
         new_tags = all_extracted_tags - existing_tags
         
         # Update the tag list with all tags (existing + new)
-        if new_tags:
+        if new_tags or not os.path.exists(tag_list_file):
             all_tags = existing_tags.union(all_extracted_tags)
             update_tag_list_file(tag_list_file, all_tags)
         
