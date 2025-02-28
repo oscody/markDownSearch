@@ -19,30 +19,27 @@ def extract_tags_from_file(file_path):
         # Parse the YAML frontmatter
         try:
             frontmatter = yaml.safe_load(frontmatter_text)
-            
-            # Check if frontmatter is a dictionary (proper YAML)
             if not isinstance(frontmatter, dict):
                 return set()
             
-            # Extract tags from the 'tags' field
             tags = frontmatter.get('tags', [])
             
-            # Handle different formats of tags (string, list, etc.)
             if isinstance(tags, str):
-                # Split comma-separated tags if it's a string
-                tags = [tag.strip() for tag in tags.split(',')]
+                # If commas are present, split on commas; otherwise, split on whitespace
+                if ',' in tags:
+                    tags = [tag.strip() for tag in tags.split(',')]
+                else:
+                    tags = [tag.strip() for tag in tags.split()]
             elif isinstance(tags, list):
-                # Keep as is if it's already a list
-                pass
+                # Optionally, you could also split any string items in the list further
+                tags = [subtag for tag in tags for subtag in (tag.split(',') if ',' in tag else tag.split())]
+                tags = [tag.strip() for tag in tags]
             else:
-                # Return empty set for other cases
                 return set()
             
-            # Convert to set to remove duplicates and normalize
-            return {tag.strip() for tag in tags if tag and tag.strip()}
+            return {tag for tag in tags if tag}
             
         except yaml.YAMLError:
-            # Return empty set if there's an error parsing the YAML
             return set()
     except Exception as e:
         print(f"Error processing {file_path}: {str(e)}")
