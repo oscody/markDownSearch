@@ -19,25 +19,41 @@ def extract_tags_from_file(file_path):
         # Parse the YAML frontmatter
         try:
             frontmatter = yaml.safe_load(frontmatter_text)
+            
+            # Check if frontmatter is a dictionary (proper YAML)
             if not isinstance(frontmatter, dict):
                 return set()
             
+            # Extract tags from the 'tags' field
             tags = frontmatter.get('tags', [])
             
+            # Handle different formats of tags (string, list, etc.)
+            parts = []
             if isinstance(tags, str):
-                # If commas are present, split on commas; otherwise, split on whitespace
+                # First split on commas if present; otherwise split on whitespace
                 if ',' in tags:
-                    tags = [tag.strip() for tag in tags.split(',')]
+                    parts = [tag.strip() for tag in tags.split(',') if tag.strip()]
                 else:
-                    tags = [tag.strip() for tag in tags.split()]
+                    parts = [tag.strip() for tag in tags.split() if tag.strip()]
             elif isinstance(tags, list):
-                # Optionally, you could also split any string items in the list further
-                tags = [subtag for tag in tags for subtag in (tag.split(',') if ',' in tag else tag.split())]
-                tags = [tag.strip() for tag in tags]
+                for item in tags:
+                    if isinstance(item, str):
+                        if ',' in item:
+                            parts.extend([tag.strip() for tag in item.split(',') if tag.strip()])
+                        else:
+                            parts.extend([tag.strip() for tag in item.split() if tag.strip()])
             else:
                 return set()
             
-            return {tag for tag in tags if tag}
+            # Further split tokens that contain spaces so that "Agents AI readme" becomes three tags
+            final_tags = set()
+            for part in parts:
+                if ' ' in part:
+                    final_tags.update([tag for tag in part.split() if tag])
+                else:
+                    final_tags.add(part)
+            
+            return final_tags
             
         except yaml.YAMLError:
             return set()
