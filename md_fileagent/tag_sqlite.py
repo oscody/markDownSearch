@@ -45,6 +45,39 @@ def check_for_ai_suggestions(db_path="obsidian_index.db"):
 
 
 
+def update_file_with_tags(file_path, existing_tags, new_tags, update_time, db_path="obsidian_index.db"):
+    """Add a new file or update an existing one if renamed."""
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    file_name = os.path.basename(file_path)
+
+    date_created = datetime.fromtimestamp(os.path.getctime(file_path)).strftime("%Y-%m-%d %H:%M:%S")
+
+    existing_tags = ', '.join(existing_tags.values()) if isinstance(existing_tags, dict) else str(existing_tags)
+    new_tags = ', '.join(new_tags.values()) if isinstance(new_tags, dict) else str(new_tags)
+
+    # Check if the file already exists based on both name and path
+    cursor.execute("SELECT id FROM files WHERE name = ? AND path = ?", (file_name, file_path))
+    result = cursor.fetchone()
+
+    if result:
+        # File exists, update it using both name and path as criteria
+        cursor.execute("""
+            UPDATE files
+            SET updated = ?, ai_existing_tags = ?, ai_new_tags = ?
+            WHERE name = ? AND path = ?
+        """, (update_time, existing_tags, new_tags, file_name, file_path))
+    else:
+        # Insert new file record
+        cursor.execute("""
+            INSERT INTO files (name, path, date_created, deleted, ai_existing_tags, ai_new_tags, updated)
+            VALUES (?, ?, ?, 0, ?, ?, ?)
+        """, (file_name, file_path, date_created, existing_tags, new_tags, update_time))
+
+    conn.commit()
+    conn.close()
+
+
 def add_file_with_tags(file_path , existing_tags, new_tags , update_time, db_path="obsidian_index.db",):
     """Add a new file or update an existing one if renamed."""
     conn = sqlite3.connect(db_path)
@@ -65,7 +98,6 @@ def add_file_with_tags(file_path , existing_tags, new_tags , update_time, db_pat
 
     conn.commit()
     conn.close()
-
 
 
 def get_tag_by_file(file_path, db_path="obsidian_index.db"):

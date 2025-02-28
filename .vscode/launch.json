@@ -27,6 +27,14 @@
       },
       "cwd": "${workspaceFolder}", // Sets the current working directory to the project root
       "python": "/Users/bogle/mambaforge/bin/python" // Use the virtual environment's Python
+    },
+    {
+      "name": "Run tag_suggestion.py",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/tag_suggestion.py",
+      "console": "integratedTerminal",
+      "python": "/Users/bogle/mambaforge/bin/python"
     }
   ]
 }
