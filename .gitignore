@@ -29,3 +29,4 @@ drive-download/
 multiagent_autogen/
 
 !obsidian_index.db
+!tags_list.md

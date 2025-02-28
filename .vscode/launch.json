@@ -35,6 +35,14 @@
       "program": "${workspaceFolder}/tag_suggestion.py",
       "console": "integratedTerminal",
       "python": "/Users/bogle/mambaforge/bin/python"
+    },
+    {
+      "name": "Run tag_daemonv2.py",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/md_fileagent/tag_daemonv2.py",
+      "console": "integratedTerminal",
+      "python": "/Users/bogle/mambaforge/bin/python"
     }
   ]
 }
