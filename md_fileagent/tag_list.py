@@ -19,9 +19,6 @@ def tag_list():
 
     return existing_tags_line
     
-
-import re
-
 def tag_cleaner(tag_dict_or_model):
     # If it's a Pydantic model, convert to a dict
     if hasattr(tag_dict_or_model, 'dict') and callable(tag_dict_or_model.dict):
