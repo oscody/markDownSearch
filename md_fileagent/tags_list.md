@@ -5,6 +5,7 @@
 #AI
 #AILearning
 #AIStreaming
+#AITutorial
 #ASPNetCore
 #AgentZero
 #Agents
@@ -114,6 +115,7 @@
 #datingadvice
 #datingpreparation
 #datingquestions
+#diarisation
 #discord
 #dj
 #facilitator
@@ -140,19 +142,23 @@
 #langchain
 #learningLangchain
 #lebronjames
+#light-Novel
 #lightnovel
 #llamaindex
 #madman
+#manhwa
 #maroons
 #medium
 #memory
 #moderndaynurse
 #money
 #multiagent
+#music-playlist
 #neverbeforeseen
 #newjackcity
 #np
 #ob
+#obsidian
 #obsidian-setup
 #obsidian-tips
 #one
@@ -182,6 +188,7 @@
 #reits
 #relationshippreparation
 #relationshipquestions
+#research
 #revolution
 #revolutionradio
 #rrr
@@ -193,6 +200,7 @@
 #singlesjourney
 #speech-recognition
 #speech-to-text
+#steamgames
 #stluciacarnival
 #structuredoutputs
 #stvincentcarnival
@@ -201,6 +209,7 @@
 #thebeginningaftertheend
 #thisorthat
 #todo
+#todolist
 #toread
 #tradingview
 #unspoketruths
@@ -209,5 +218,6 @@
 #vr
 #vybzkartel
 #weaviate
+#webnovel
 #whisper
 #women

@@ -143,7 +143,7 @@ def process_markdown_files(markdown_dir, tag_list_file):
         print(f"Error processing markdown files: {str(e)}")
         return set(), 0, 0
 
-if __name__ == "__main__":
+def start_process():
     # Configure these paths for your environment
     markdown_directory = "/Users/bogle/Dev/obsidian/Bogle"
     tag_list_file = "/Users/bogle/Dev/Agent/markDownSearch/md_fileagent/tags_list.md"
@@ -157,3 +157,7 @@ if __name__ == "__main__":
         print(f"Added {len(new_tags)} new tags: {', '.join(sorted(new_tags))}")
     else:
         print("No new tags found.")
+
+
+if __name__ == "__main__":
+    start_process()

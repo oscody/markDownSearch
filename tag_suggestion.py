@@ -11,7 +11,8 @@ from md_fileagent.tag_sqlite import check_for_ai_suggestions , add_file_with_tag
 from md_fileagent.yaml_constructor import update_frontmatter, create_frontmatter , has_frontmatter
 from md_fileagent.utility import get_date_time
 from md_fileagent.file_writer import update_file , get_file_content, get_all_files, get_filename , get_file_path
-from md_fileagent.git_helper import files_added , files_changed
+from md_fileagent.git_helper import files_added , files_changed , get_files_modified
+from md_fileagent.tag_daemonv2 import start_process
 from pydantic import BaseModel
 
 class TagModel(BaseModel):
@@ -113,7 +114,7 @@ def process_file_newfiles(file_path):
     updated_tag = update_frontmatter(content,cleantagsv2 , clean_new_metadata_infov2 , 'tagwriter' , time)
     update_file(file_path , updated_tag)
 
-    add_file_with_tags(file_path, cleantagsv2, clean_new_metadata_infov2 , time)
+    # add_file_with_tags(file_path, cleantagsv2, clean_new_metadata_infov2 , time)
 
 
 
@@ -160,7 +161,7 @@ def process_file_changed(file_path):
     updated_tag = update_frontmatter(content,cleantagsv2 , clean_new_metadata_infov2 , 'tagwriter' , time)
     update_file(file_path , updated_tag)
 
-    update_file_with_tags(file_path, cleantagsv2, clean_new_metadata_infov2 , time)
+    # update_file_with_tags(file_path, cleantagsv2, clean_new_metadata_infov2 , time)
 
 
 def main():
@@ -172,13 +173,17 @@ def main():
     # Get list of new Markdown files
     # new_files = get_new_files(db_path, directory_to_scan)
 
+
+    #checks for any new tags and updates list
+    start_process()
+
     new_files = files_added(directory_to_scan)
 
     # Process each new file individually.
     for file_path in new_files:
         process_file_newfiles(file_path)
 
-    changed_files = files_changed(directory_to_scan)
+    changed_files = get_files_modified(directory_to_scan)
     
         # Process each new file individually.
     for file_path in changed_files:

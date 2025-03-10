@@ -2,7 +2,7 @@ from git import Repo
 import os
 import datetime
 
-def log_git_changes(repo_path, log_file_path='file_changes.log'):
+def log_git_changes(repo_path, log_file_path='md_fileagent/git/git_file_changes.log'):
     """
     Log files that have been changed or added in a Git repository.
     

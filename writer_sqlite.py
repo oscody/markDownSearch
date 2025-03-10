@@ -35,7 +35,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler("app_write.log", mode='a'),
+        logging.FileHandler("writer_sqlite.log", mode='a'),
         logging.StreamHandler()
     ]
 )

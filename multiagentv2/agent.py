@@ -80,7 +80,7 @@ review_hashtags_task = Task(
     description="Review all the generated hashtags and create a final list of the most relevant ones.",
     agent=reviewer,
     expected_output="A final list of curated hashtags.",
-    output_file="report.md"
+    output_file="multiagentv2/agent_report.md"
 )
 
 
