@@ -167,9 +167,9 @@ def process_file_changed(file_path):
 def main():
     db_path = "obsidian_index.db"
     directory_to_scan = "/Users/bogle/Dev/obsidian/Bogle"
-    conn = initialize_db(db_path)
+    # conn = initialize_db(db_path)
     
-    check_for_ai_suggestions(db_path)
+    # check_for_ai_suggestions(db_path)
     # Get list of new Markdown files
     # new_files = get_new_files(db_path, directory_to_scan)
 
@@ -191,7 +191,7 @@ def main():
 
     
     print("End")
-    conn.close()
+    # conn.close()
 
 if __name__ == '__main__':
     main()
